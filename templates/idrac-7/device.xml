@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <device>
+    <presentationURL>http://{{ local_ip }}:{{ local_port }}/ssdp/{{ template_idx }}/present.html</presentationURL>
+    <deviceType>urn:schemas-upnp-org:device:Basic:1</deviceType>
+    <friendlyName>IDRAC-6THL6U1 (PowerEdge R720)</friendlyName>
+    <manufacturer>Dell Inc.</manufacturer>
+    <modelName>Integrated Dell Remote Access Controller 7</modelName>
+    <UDN>{{ session_usn }}</UDN>
+  </device>
+</root>
