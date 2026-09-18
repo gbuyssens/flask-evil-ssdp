@@ -169,15 +169,57 @@ All captured events are logged to `logs-essdp.txt` with timestamps:
 
 ## Common UPnP Device Types
 
+The `deviceType` you declare in `device.xml` decides which category the fake device
+lands in on the victim's machine — in Windows Explorer's **Network** view, a
+`Printer:1` shows up under *Printers* while an `InternetGatewayDevice:1` shows up
+under *Network Infrastructure*. Pick the one that matches the story your
+`friendlyName` tells. 
+
+### Standard UPnP Forum types
+
+| Device | URN | Windows Explorer category |
+|--------|-----|---------------------------|
+| Basic / generic | `urn:schemas-upnp-org:device:Basic:1` | Other Devices |
+| Router / gateway | `urn:schemas-upnp-org:device:InternetGatewayDevice:1` (also `:2`) | Network Infrastructure |
+| WAN Device | `urn:schemas-upnp-org:device:WANDevice:1` | (sub-device of IGD) |
+| WAN Connection | `urn:schemas-upnp-org:device:WANConnectionDevice:1` | (sub-device of IGD) |
+| LAN Device | `urn:schemas-upnp-org:device:LANDevice:1` | (sub-device of IGD) |
+| Wireless access point | `urn:schemas-upnp-org:device:WLANAccessPointDevice:1` | Network Infrastructure |
+| Media Server | `urn:schemas-upnp-org:device:MediaServer:1` (also `:2` `:3` `:4`) | Media Devices |
+| Media Renderer | `urn:schemas-upnp-org:device:MediaRenderer:1` (also `:2` `:3`) | Media Devices |
+| Printer | `urn:schemas-upnp-org:device:Printer:1` | Printers |
+| Scanner | `urn:schemas-upnp-org:device:Scanner:1` | Printers |
+| Camera | `urn:schemas-upnp-org:device:DigitalSecurityCamera:1` | Other Devices |
+| Light | `urn:schemas-upnp-org:device:BinaryLight:1` | Other Devices |
+| Dimmable light | `urn:schemas-upnp-org:device:DimmableLight:1` | Other Devices |
+
+`Basic:1` is the fallback when nothing fits. Appliances with no dedicated UPnP
+profile — a BMC, an identity provider, a firewall — should use it.
+
+### De facto types outside the UPnP Forum namespace
+
 | Device | URN |
 |--------|-----|
-| Scanner | `urn:schemas-upnp-org:device:Scanner:1` |
-| Printer | `urn:schemas-upnp-org:device:Printer:1` |
-| Router | `urn:schemas-upnp-org:device:InternetGatewayDevice:1` |
-| Media Server | `urn:schemas-upnp-org:device:MediaServer:1` |
-| Camera | `urn:schemas-upnp-org:device:DigitalSecurityCamera:1` |
-| Light | `urn:schemas-upnp-org:device:BinaryLight:1` |
+| DIAL — Chromecast, Android TV, meeting-room displays | `urn:dial-multiscreen-org:device:dial:1` |
+| Wi-Fi Protected Setup | `urn:schemas-wifialliance-org:device:WFADevice:1` |
+| Sonos and other smart speakers | `urn:smartspeaker-audio:device:SpeakerDevice:1` |
+| Roku | `roku:ecp` |
 
+### Search targets
+
+These are **not** device types — never put them in `device.xml`. They are the `ST`
+values a client sends in an M-SEARCH, and which the server echoes back in its
+response.
+
+| Target | Meaning |
+|--------|---------|
+| `upnp:rootdevice` | Root devices only — by far the most common `ST` |
+| `ssdp:all` | Everything that answers |
+| `uuid:<UDN>` | One specific device |
+
+> **Tip:** rather than guessing, run analyze mode first (`-a`). The server logs every
+> `ST` it sees (`New host detected: … (ST: …)`), so you can see what the target
+> network actually searches for before deciding what to advertise.
 ---
 
 ## References
