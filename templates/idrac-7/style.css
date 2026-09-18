@@ -1,0 +1,241 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #d2d2d2;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #ffffff;
+}
+
+.bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.stage {
+    position: relative;
+    z-index: 1;
+    padding: 72px 16px 40px;
+}
+
+.panel {
+    width: 630px;
+    max-width: 100%;
+    margin: 0 auto;
+    border: 6px solid #ffffff;
+    background: #1c1c1c;
+    background-image: linear-gradient(180deg, #3d3d3d 0%, #2b2b2b 22%, #151515 62%, #030303 100%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+.panel-head {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 30px 40px 26px;
+}
+
+.dell-mark {
+    width: 78px;
+    height: 78px;
+    flex: none;
+}
+
+.head-title {
+    font-size: 15px;
+    line-height: 1.32;
+    color: #ffffff;
+}
+
+.panel-body {
+    padding: 0 40px 22px;
+}
+
+.rule {
+    height: 1px;
+    background: #5c5c5c;
+}
+
+.body-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 0 0;
+}
+
+.body-top h1 {
+    font-size: 19px;
+    font-weight: normal;
+    color: #ffffff;
+}
+
+.help {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    color: #2b2b2b;
+}
+
+.target {
+    margin-top: 16px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #a9bada;
+}
+
+.instr {
+    margin-top: 9px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.grid {
+    display: flex;
+    gap: 32px;
+    margin-top: 18px;
+}
+
+.grid-domain {
+    margin-top: 16px;
+}
+
+.col {
+    width: 186px;
+}
+
+.col label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.col input,
+.col select {
+    display: block;
+    width: 100%;
+    height: 21px;
+    padding: 1px 3px;
+    border: 1px solid #8e8e8e;
+    border-radius: 0;
+    background: #2f2a31;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #ffffff;
+}
+
+.col input:focus,
+.col select:focus {
+    outline: none;
+    border-color: #c9c9c9;
+}
+
+.spacer {
+    height: 58px;
+}
+
+.actions {
+    padding-top: 13px;
+    text-align: right;
+}
+
+.btn {
+    width: 70px;
+    height: 22px;
+    margin-left: 7px;
+    border-radius: 3px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    border: 1px solid #7d7d7d;
+    background: #b8b8b8;
+    background-image: linear-gradient(180deg, #e0e0e0 0%, #b4b4b4 52%, #9d9d9d 100%);
+    color: #8a8a8a;
+}
+
+.btn-submit {
+    border: 1px solid #12518f;
+    background: #1f6fbf;
+    background-image: linear-gradient(180deg, #4a9ae0 0%, #2077c9 52%, #1560ac 100%);
+    color: #ffffff;
+}
+
+.btn-submit:hover {
+    background-image: linear-gradient(180deg, #5aa8ea 0%, #2b84d6 52%, #1a6cbb 100%);
+}
+
+.links {
+    width: 630px;
+    max-width: 100%;
+    margin: 20px auto 0;
+    text-align: center;
+    font-size: 11px;
+    color: #8f8f8f;
+}
+
+.links a {
+    color: #8f8f8f;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.sep {
+    margin: 0 9px;
+    color: #a8a8a8;
+}
+
+@media (max-width: 680px) {
+    .stage {
+        padding-top: 28px;
+    }
+
+    .panel-head {
+        gap: 16px;
+        padding: 20px 20px 18px;
+    }
+
+    .dell-mark {
+        width: 58px;
+        height: 58px;
+    }
+
+    .panel-body {
+        padding: 0 20px 18px;
+    }
+
+    .grid {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .col {
+        width: 100%;
+    }
+
+    .spacer {
+        height: 24px;
+    }
+}
