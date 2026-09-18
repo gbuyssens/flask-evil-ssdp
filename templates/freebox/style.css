@@ -1,0 +1,420 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    position: relative;
+    overflow-x: hidden;
+    background: #ffffff;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #3c3c3c;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+.decor {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.red-block {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25%;
+    height: 100%;
+    background: #E2001A;
+}
+
+.pill {
+    position: absolute;
+    display: block;
+    border-radius: 999px;
+}
+
+.pill-1 {
+    top: -1%;
+    left: 5%;
+    width: 62px;
+    height: 270px;
+    background: #E2001A;
+    transform: rotate(33deg);
+}
+
+.pill-2 {
+    top: 24%;
+    left: 7%;
+    width: 42px;
+    height: 165px;
+    background: #111111;
+    transform: rotate(33deg);
+}
+
+.pill-3 {
+    top: 25%;
+    left: 16%;
+    width: 46px;
+    height: 76px;
+    background: #E2001A;
+    transform: rotate(33deg);
+}
+
+.pill-4 {
+    bottom: -4%;
+    left: 16%;
+    width: 74px;
+    height: 390px;
+    background: #E2001A;
+    transform: rotate(33deg);
+}
+
+.pill-5 {
+    bottom: -6%;
+    left: 8%;
+    width: 56px;
+    height: 195px;
+    background: #E2001A;
+    transform: rotate(33deg);
+}
+
+.pill-6 {
+    top: -2%;
+    right: 26%;
+    width: 48px;
+    height: 165px;
+    background: #111111;
+    transform: rotate(33deg);
+}
+
+.pill-7 {
+    top: 62%;
+    right: 3%;
+    width: 56px;
+    height: 135px;
+    background: #ffffff;
+    transform: rotate(33deg);
+}
+
+.pill-8 {
+    bottom: -3%;
+    right: 22%;
+    width: 46px;
+    height: 120px;
+    background: #111111;
+    transform: rotate(33deg);
+}
+
+.rocket {
+    position: absolute;
+    right: 8%;
+    top: 12%;
+    width: 300px;
+    height: 760px;
+    transform: rotate(32deg);
+    transform-origin: 50% 50%;
+}
+
+.stage {
+    position: relative;
+    z-index: 1;
+    min-height: 100%;
+    padding: 26px 20px 96px;
+    text-align: center;
+}
+
+.wordmark {
+    font-size: 84px;
+    font-weight: 200;
+    line-height: 1.05;
+    letter-spacing: 0.5px;
+    color: #111111;
+    white-space: nowrap;
+}
+
+.version {
+    margin-left: 10px;
+    font-size: 27px;
+    font-weight: 300;
+    letter-spacing: 0;
+}
+
+.mode {
+    margin-top: 12px;
+    font-size: 23px;
+    font-weight: 300;
+    color: #a6a6a6;
+}
+
+.apps {
+    display: grid;
+    grid-template-columns: repeat(6, 128px);
+    justify-content: center;
+    row-gap: 34px;
+    margin-top: 86px;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.tile svg {
+    width: 30px;
+    height: 30px;
+}
+
+.app .label {
+    margin-top: 9px;
+    font-size: 13px;
+    line-height: 1.32;
+    color: #4a4a4a;
+}
+
+.app:hover .label {
+    color: #111111;
+    font-weight: 600;
+}
+
+.tile-status {
+    background: linear-gradient(160deg, #6fd3ce, #45bcb8);
+}
+
+.tile-download {
+    background: linear-gradient(160deg, #c2aef0, #a58ce4);
+}
+
+.tile-files {
+    background: linear-gradient(160deg, #c3c7cb, #a9aeb4);
+}
+
+.tile-settings {
+    background: linear-gradient(160deg, #ef5f68, #de3b49);
+}
+
+.tile-profiles {
+    background: linear-gradient(160deg, #f8c85a, #eeae2c);
+}
+
+.tile-network {
+    background: linear-gradient(160deg, #6f9df5, #4f7fe3);
+}
+
+.tile-calls {
+    background: linear-gradient(160deg, #f59bab, #ed7a92);
+}
+
+.tile-rec {
+    background: linear-gradient(160deg, #8ed47a, #6cc158);
+}
+
+.tile-guide {
+    background: linear-gradient(160deg, #5ecfcb, #3bb9b5);
+}
+
+.tile-contacts {
+    background: linear-gradient(160deg, #6fb6ec, #4f9ade);
+}
+
+.auth {
+    display: none;
+    margin-top: 96px;
+}
+
+#login:target {
+    display: block;
+}
+
+#login:target ~ .desktop {
+    display: none;
+}
+
+.auth-card {
+    width: 300px;
+    margin: 0 auto;
+    padding: 16px 18px 20px;
+    background: #ffffff;
+    border: 1px solid #e3e3e3;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    text-align: left;
+}
+
+.auth-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.auth-hint {
+    margin-top: 4px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #8c8c8c;
+}
+
+.auth-card input[type="password"] {
+    display: block;
+    width: 100%;
+    height: 30px;
+    padding: 4px 7px;
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1a1a1a;
+}
+
+.auth-card input[type="password"]:focus {
+    outline: none;
+    border-color: #9c9c9c;
+}
+
+.auth-submit {
+    display: block;
+    margin: 16px auto 0;
+    padding: 7px 24px;
+    border: 0;
+    border-radius: 999px;
+    background: #E2001A;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.auth-submit:hover {
+    background: #c40017;
+}
+
+.auth-link {
+    margin-top: 24px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #9a9a9a;
+}
+
+.auth-link-last {
+    margin-top: 20px;
+}
+
+.taskbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    background: rgba(125, 125, 125, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.taskbar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #E2001A;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.taskbar-clock {
+    padding: 3px 7px;
+    border-radius: 2px;
+    background: rgba(30, 30, 30, 0.72);
+    font-size: 12px;
+    color: #ffffff;
+}
+
+@media (max-width: 1100px) {
+    .apps {
+        grid-template-columns: repeat(4, 124px);
+    }
+
+    .rocket {
+        right: -6%;
+        width: 240px;
+        height: 610px;
+    }
+}
+
+@media (max-width: 720px) {
+    .wordmark {
+        font-size: 52px;
+    }
+
+    .version {
+        font-size: 18px;
+    }
+
+    .mode {
+        font-size: 18px;
+    }
+
+    .apps {
+        grid-template-columns: repeat(3, 104px);
+        row-gap: 26px;
+        margin-top: 46px;
+    }
+
+    .auth {
+        margin-top: 52px;
+    }
+
+    .red-block {
+        width: 18%;
+    }
+
+    .rocket {
+        right: -22%;
+        top: 22%;
+        width: 190px;
+        height: 480px;
+    }
+}
+
+@media (max-width: 380px) {
+    .apps {
+        grid-template-columns: repeat(2, 128px);
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 300px;
+    }
+}
