@@ -1,0 +1,246 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    position: relative;
+    font-family: "Red Hat Text", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    color: #151515;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+        radial-gradient(ellipse 55% 40% at 20% 14%, rgba(176, 208, 96, 0.55), transparent 68%),
+        radial-gradient(ellipse 48% 44% at 82% 20%, rgba(104, 152, 58, 0.5), transparent 70%),
+        radial-gradient(ellipse 60% 32% at 62% 70%, rgba(126, 126, 112, 0.42), transparent 72%),
+        linear-gradient(168deg, #567c2c 0%, #3d5c22 42%, #24381a 78%, #16240f 100%);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse 85% 75% at 50% 45%, transparent 35%, rgba(10, 18, 8, 0.55) 100%);
+}
+
+.locale {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+.locale svg {
+    width: 17px;
+    height: 17px;
+    fill: #ffffff;
+}
+
+.page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 72px 16px 88px;
+}
+
+.card {
+    width: 100%;
+    max-width: 560px;
+    background: #ffffff;
+    border-radius: 3px;
+    padding: 40px 48px 44px;
+}
+
+.brand {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.brand-logo {
+    display: block;
+    width: 236px;
+    height: 44px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #151515;
+    margin-bottom: 14px;
+}
+
+.subtitle {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #151515;
+    margin-bottom: 28px;
+}
+
+.stage-pw {
+    display: none;
+}
+
+#password:target {
+    display: block;
+}
+
+#password:target ~ .stage-id {
+    display: none;
+}
+
+.chip {
+    display: none;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 26px;
+    padding: 5px 14px 5px 5px;
+    border: 1px solid #d2d2d2;
+    border-radius: 24px;
+    width: fit-content;
+    font-size: 15px;
+    color: #151515;
+}
+
+.chip-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #b8bbbe;
+    flex: none;
+}
+
+.field-label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #151515;
+}
+
+.req {
+    color: #c9190b;
+}
+
+.pf-input {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #8a8d90;
+    border-radius: 0;
+    background: #ffffff;
+    padding: 6px 0 7px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #151515;
+}
+
+.pf-input::placeholder {
+    color: #6a6e73;
+    font-style: italic;
+    opacity: 1;
+}
+
+.pf-input:focus {
+    outline: none;
+    border-bottom: 2px solid #0066cc;
+    padding-bottom: 6px;
+}
+
+.field-error {
+    display: none;
+    margin-top: 6px;
+    font-size: 14px;
+    color: #c9190b;
+}
+
+.field-error.show {
+    display: block;
+}
+
+.link-inline {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 14px;
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.link-inline:hover {
+    text-decoration: underline;
+}
+
+.pf-btn {
+    display: block;
+    width: 100%;
+    margin-top: 32px;
+    padding: 11px 16px;
+    border: 0;
+    border-radius: 3px;
+    background: #0066cc;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pf-btn:hover {
+    background: #004080;
+}
+
+.pf-btn:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: -4px;
+}
+
+.powered {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 22px;
+    text-align: center;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.82);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 520px) {
+    .card {
+        padding: 30px 24px 34px;
+    }
+
+    .brand-logo {
+        width: 190px;
+        height: 35px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+}
