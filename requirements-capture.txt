@@ -1,0 +1,3 @@
+# Optional: NetNTLM capture / relay for --smb-capture, --relay and the
+# LLMNR/NBT-NS/mDNS poisoners. Not needed for pure SSDP/WSD phishing.
+impacket

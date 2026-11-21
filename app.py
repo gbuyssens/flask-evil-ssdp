@@ -11,7 +11,6 @@ import argparse
 import logging
 import subprocess
 import threading
-import netifaces
 import random
 import time
 from datetime import datetime
@@ -685,11 +684,29 @@ def create_app(config):
 # --------------------------------------------------------------------------- #
 
 def get_interface_ip(interface: str) -> str:
+    # Prefer ifaddr (pure-python, maintained, cross-platform); fall back to a
+    # Linux ioctl so the tool still works with no third-party dependency.
     try:
-        addrs = netifaces.ifaddresses(interface)
-        return addrs[netifaces.AF_INET][0]['addr']
+        import ifaddr
+        for adapter in ifaddr.get_adapters():
+            if adapter.nice_name == interface:
+                for ip in adapter.ips:
+                    if ip.is_IPv4:
+                        return ip.ip
+    except ImportError:
+        pass
     except Exception as e:
-        print(Colors.error(f"Could not get IP for interface {interface}: {e}"))
+        print(Colors.warning(f"ifaddr lookup failed ({e}); falling back to ioctl"))
+    try:
+        import fcntl
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            packed = struct.pack('256s', interface.encode()[:15])
+            return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, packed)[20:24])  # SIOCGIFADDR
+        finally:
+            s.close()
+    except Exception as e:
+        print(Colors.error(f"Could not get IPv4 for interface {interface}: {e}"))
         sys.exit(1)
 
 
@@ -899,21 +916,32 @@ def main():
     procs = []
     subs = []
 
-    listener = SSDPListener(local_ip, args.port, templates_config, args.analyze,
-                            notify=not args.no_notify, notify_interval=args.notify_interval)
-    procs.append(Process(target=listener.listen_forever, daemon=True))
-
-    if args.wsd:
-        wsd = WSDListener(local_ip, args.port, templates_config, args.analyze)
-        procs.append(Process(target=wsd.listen_forever, daemon=True))
+    def add_listener(factory, label, port):
+        # The socket bind happens here (parent process). If the port is taken,
+        # skip that protocol with a warning instead of crashing the whole tool.
+        try:
+            obj = factory()
+        except OSError as e:
+            print(Colors.error(f"{label} disabled (UDP {port}): {e}"))
+            print(Colors.info("  A local service may hold the port — on Kali: sudo systemctl stop avahi-daemon systemd-resolved"))
+            return
+        procs.append(Process(target=obj.listen_forever, daemon=True))
 
     respond_to = args.respond_to
+    add_listener(lambda: SSDPListener(local_ip, args.port, templates_config, args.analyze,
+                                      notify=not args.no_notify, notify_interval=args.notify_interval),
+                 'SSDP', 1900)
+    if args.wsd:
+        add_listener(lambda: WSDListener(local_ip, args.port, templates_config, args.analyze), 'WSD', 3702)
     if args.llmnr:
-        procs.append(Process(target=LLMNRListener(local_ip, args.analyze, respond_to).listen_forever, daemon=True))
+        add_listener(lambda: LLMNRListener(local_ip, args.analyze, respond_to), 'LLMNR', 5355)
     if args.mdns:
-        procs.append(Process(target=MDNSListener(local_ip, args.analyze, respond_to).listen_forever, daemon=True))
+        add_listener(lambda: MDNSListener(local_ip, args.analyze, respond_to), 'mDNS', 5353)
     if args.nbtns:
-        procs.append(Process(target=NBTNSListener(local_ip, args.analyze, respond_to).listen_forever, daemon=True))
+        add_listener(lambda: NBTNSListener(local_ip, args.analyze, respond_to), 'NBT-NS', 137)
+
+    if not procs and not args.analyze:
+        print(Colors.warning("No UDP listeners started (ports busy?); only the HTTP server will run."))
 
     for p in procs:
         p.start()

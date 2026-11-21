@@ -24,15 +24,18 @@ A sophisticated multi-template UPnP (Universal Plug and Play) spoofing framework
 ```bash
 python3 >= 3.7
 flask
-netifaces
+ifaddr
 ```
 
 ### Setup
 
 ```bash
-git clone https://github.com/CobblePot59/flask-evil-ssdp.git
+git clone https://github.com/gbuyssens/flask-evil-ssdp.git
 cd flask-evil-ssdp
 pip install -r requirements.txt
+
+# Optional: NetNTLM capture/relay (--smb-capture, --relay) and poisoner capture
+pip install -r requirements-capture.txt
 ```
 
 ---
@@ -286,6 +289,24 @@ sudo impacket-ntlmrelayx -t <target> -smb2support                    # or: --rel
   Server 2025, and all Domain Controllers.
 - LLMNR/NBT-NS are being phased out (LLMNR off by default on Win11 24H2; disabled by
   CIS/STIG hardening), so yield is lower on modern/hardened networks.
+- **Port conflicts:** the poisoners bind UDP 5353 (mDNS) and 5355 (LLMNR), which on
+  Kali are held by `avahi-daemon` and `systemd-resolved`. The tool skips a protocol
+  whose port is busy (with a warning) instead of crashing — free the ports first with
+  `sudo systemctl stop avahi-daemon systemd-resolved`.
+
+---
+
+## Development
+
+Offline unit tests cover the packet builders and parsers (SSDP NOTIFY, WSD SOAP,
+LLMNR/NBT-NS/mDNS responses). They need no root, sockets or third-party deps:
+
+```bash
+python3 tests/test_app.py
+```
+
+CI (`.github/workflows/ci.yml`) runs `py_compile` + the tests on Python 3.9/3.11/3.12
+and a smoke test (`python app.py -L`) on 3.12.
 
 ---
 
